@@ -10,10 +10,12 @@ export const UserAuth = () => {
 
 export default function AuthContextProvider({ children }) {
   const [isLoggedOut, setIsLoggedOut] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   // const [isStudent, setIsStudent] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         onSnapshot(doc(db, "teacher", user.uid), (doc) => {
@@ -21,16 +23,18 @@ export default function AuthContextProvider({ children }) {
           setIsLoggedOut(false);
           console.log("it ran again teacher");
         });
+        setIsLoading(false);
       } else {
         setUser(null);
         setIsLoggedOut(true);
+        setIsLoading(false);
       }
     });
     return () => unsubscribe();
   }, []);
 
   return (
-    <UserContext.Provider value={{ isLoggedOut, user }}>
+    <UserContext.Provider value={{ isLoggedOut, user, isLoading }}>
       {children}
     </UserContext.Provider>
   );

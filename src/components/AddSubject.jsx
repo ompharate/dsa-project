@@ -4,6 +4,7 @@ const AddSubject = ({ fetchSubjectData, addSubject, uid }) => {
   const [subjectName, setSubjectName] = useState("");
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    if (!subjectName) return
     addSubject(uid, subjectName);
     setSubjectName("");
     fetchSubjectData();

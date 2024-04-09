@@ -11,7 +11,7 @@ const UserDashboard = () => {
   const [activeSubject, setActiveSubject] = useState();
   const [activeSubjectId, setActiveSubjectId] = useState();
 
-  console.log("active subject ", activeSubject);
+
   const fetchSubjectData = async () => {
     const subjectData = await fetchSubject(user.uid);
     setSubjectData(subjectData);
@@ -24,7 +24,7 @@ const UserDashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="bg-slate-300  p-3 rounded-sm mt-5">
+      <div className="bg-slate-300  p-3 rounded-xl  mt-5">
         <div className="flex">
           <AddSubject
             fetchSubjectData={fetchSubjectData}
@@ -52,7 +52,12 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <TabHandler subjectId={activeSubjectId} teacherId={user.uid} activeSubject={activeSubject} />
+
+      <TabHandler
+        subjectId={activeSubjectId}
+        teacherId={user.uid}
+        activeSubject={activeSubject}
+      />
     </div>
   );
 };

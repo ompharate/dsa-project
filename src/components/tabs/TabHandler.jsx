@@ -1,39 +1,40 @@
 import React, { useState } from "react";
 import SubjectView from "./SubjectView";
 import { UseAllTabs } from "./UseAllTabs";
+import Loader from "../Loader";
 
 const TabHandler = ({ activeSubject, teacherId, subjectId }) => {
+  
   const [currentTab, setCurrentTab] = useState(0);
-  const { AddAttendance, AddMarks,CheckMarks,CheckAttendance } = UseAllTabs();
-
-  const AddTermWork = () => {};
+  const { AddAttendance, AddMarks, CheckMarks, CheckAttendance } =
+    UseAllTabs();
 
   const tabs = [
     {
       label: "Add attendance",
-      content: <AddAttendance teacherId={teacherId} subjectId={subjectId}/>,
+      content: <AddAttendance teacherId={teacherId} subjectId={subjectId} />,
     },
     {
       label: "Add marks",
-      content: <AddMarks teacherId={teacherId} subjectId={subjectId}/>,
+      content: <AddMarks teacherId={teacherId} subjectId={subjectId} />,
     },
     {
       label: "check marks",
-      content: <CheckMarks teacherId={teacherId} subjectId={subjectId}/>,
+      content: <CheckMarks teacherId={teacherId} subjectId={subjectId} />,
     },
     {
       label: "check attendance",
-      content: <CheckAttendance teacherId={teacherId} subjectId={subjectId}/>,
+      content: <CheckAttendance teacherId={teacherId} subjectId={subjectId} />,
     },
   ];
 
   return (
-    <div className="p-3">
+    <div className="p-3 ">
       <div>
         <h1 className="font-bold text-2xl">{activeSubject}</h1>
       </div>
-      <div className="p-2 flex bg-slate-100">
-        <div className="bg-slate-300 p-2 w-[14%] flex flex-col gap-1">
+      <div className="p-2 flex bg-slate-100 rounded-sm ">
+        <div className="bg-slate-300 p-2 w-[14%] flex flex-col gap-1 rounded-xl">
           {tabs.map((tab, index) => (
             <button
               onClick={() => setCurrentTab(index)}

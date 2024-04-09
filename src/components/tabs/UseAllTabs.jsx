@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHandleSubject } from "../../hooks/useHandleSubject";
+import Loader from "../Loader";
 
 export const UseAllTabs = () => {
-  const [isAdded, setIsAdded] = useState(null);
+  const [isAdded, setIsAdded] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -17,6 +18,7 @@ export const UseAllTabs = () => {
     const { AddAttendance } = useHandleSubject();
 
     async function handleSubmit() {
+      if(!roll || ! date ) return;
       const isAdded = await AddAttendance(
         roll,
         date,
@@ -80,6 +82,7 @@ export const UseAllTabs = () => {
     const [received, setReceived] = useState();
     const { AddMarks } = useHandleSubject();
     async function handleSubmit() {
+      if(!label || !roll || !outOf || !received || !AddMarks) return;
       const isAdded = await AddMarks(
         label,
         roll,
@@ -132,9 +135,12 @@ export const UseAllTabs = () => {
   const CheckAttendance = ({ teacherId, subjectId }) => {
     const { fetchAttendance, deleteAttendance } = useHandleSubject();
     const [attendance, setAttendance] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     async function getAttendance() {
+      setIsLoading(true);
       const attendance = await fetchAttendance(teacherId, subjectId);
       setAttendance(attendance);
+      setIsLoading(false);
     }
     useEffect(() => {
       getAttendance();
@@ -148,66 +154,75 @@ export const UseAllTabs = () => {
 
     return (
       <div>
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Sr.
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Roll
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Date
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Is Present
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <p className="text-green-500">{isAdded ? isAdded : null}</p>
-            {attendance?.map((att, index) => (
-              <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{att.roll}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{att.date}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {att.isPresent ? "Present" : "Not Present"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => handleDelete(att.attendanceId)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+        {isLoading ? (
+          <div className="w-[100%] flex justify-center items-center mt-5">
+            <Loader />
+          </div>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Sr.
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Roll
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Is Present
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <p className="text-green-500">{isAdded ? isAdded : null}</p>
+              {attendance?.map((att, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{att.roll}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{att.date}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {att.isPresent ? "Present" : "Not Present"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(att.attendanceId)}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     );
   };
   const CheckMarks = ({ teacherId, subjectId }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const { fetchMarks, deleteMarks } = useHandleSubject();
     const [marksData, setMarksData] = useState([]);
     async function getMarks() {
+      setIsLoading(true);
       const marks = await fetchMarks(teacherId, subjectId);
       setMarksData(marks);
+      setIsLoading(false);
     }
     useEffect(() => {
       getMarks();
@@ -221,55 +236,63 @@ export const UseAllTabs = () => {
 
     return (
       <div>
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Sr.
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Roll
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Received
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                OutOf
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <p className="text-green-500">{isAdded ? isAdded : null}</p>
-            {marksData?.map((mark, index) => (
-              <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{mark.roll}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{mark.received}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{mark.outof}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => handleDelete(mark.marksId)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+        {isLoading ? (
+          <div className="w-[100%] flex justify-center items-center mt-5">
+            <Loader />
+          </div>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Sr.
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Roll
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Received
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  OutOf
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <p className="text-green-500">{isAdded ? isAdded : null}</p>
+              {marksData?.map((mark, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{mark.roll}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {mark.received}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{mark.outof}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(mark.marksId)}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     );
   };

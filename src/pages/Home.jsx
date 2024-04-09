@@ -21,14 +21,9 @@ const Home = () => {
       <div className="text-center">
         {isLoggedOut ? (
           <>
-            <Link to={"/login"}>
-              <button className="bg-blue-500 p-3 rounded-md text-white font-medium m-2">
-                Login
-              </button>
-            </Link>
             <Link to={"/register"}>
               <button className="bg-blue-500 p-3 rounded-md text-white font-medium m-2">
-                Register
+                SignIn
               </button>
             </Link>
           </>

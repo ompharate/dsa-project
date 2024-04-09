@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const { isLoggedOut } = UserAuth();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLoggedOut) {
       navigate("/teacher/dashboard");
@@ -18,9 +19,11 @@ const Register = () => {
     e.preventDefault();
     try {
       const result = await signInWithPopup(auth, provider);
-      const { displayName, email, uid } = result.user;
+      console.log(result);
+      const { displayName, email, uid, photoURL } = result.user;
       const formData = {
         uid: uid,
+        photoURL: photoURL,
         teacherName: displayName,
         teacherEmail: email,
         type: userType,
@@ -35,37 +38,17 @@ const Register = () => {
   };
   return (
     <div>
-      <div className="flex flex-row  p-10 gap-40 max-w-7xl mx-auto justify-center items-center mt-10">
-        <form className="flex flex-col gap-2 justify-center bg-slate-300 h-[450px] p-12 rounded-2xl">
-          <h1 className="font-bold text-3xl p-3 ">Teacher Register</h1>
-          <input
-            className="bg-slate-200  text-sm rounded-lg placeholder:text-black  p-3 font-semibold w-96"
-            type="text"
-            name="name"
-            placeholder="name"
-          />
-          <input
-            className="bg-slate-200  text-sm rounded-lg placeholder:text-black  p-3 font-semibold w-96"
-            type="text"
-            name="email"
-            placeholder="email"
-          />
+      <div className="flex flex-col gap-4 max-w-xl p-4 mx-auto justify-center items-center mt-10 bg-slate-300 rounded-xl">
+        <h1 className="font-bold text-3xl p-3 ">Teacher Register</h1>
 
-          <input
-            className="bg-slate-200 text-sm  rounded-lg placeholder:text-black  p-3 font-semibold w-96"
-            type="text"
-            name="password"
-            placeholder="password"
-          />
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={(e) => registerUserGoogle(event, "teacher")}
-              className="bg-red-500 p-3 rounded-md text-white font-medium "
-            >
-              Google+
-            </button>
-          </div>
-        </form>
+        <div className="flex flex-col gap-1">
+          <button
+            onClick={(e) => registerUserGoogle(event, "teacher")}
+            className="bg-red-500 p-3 rounded-md text-white font-medium "
+          >
+            Google+
+          </button>
+        </div>
       </div>
     </div>
   );

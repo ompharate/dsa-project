@@ -21,17 +21,15 @@ const Header = () => {
         <Link to={"/"}>
           <h1>Student Management</h1>
         </Link>
-        <ul className="flex gap-4 ">
+        <ul className="flex gap-4 items-center">
           <Link to={"/about"}>
             <li>About</li>
           </Link>
           {isLoggedOut ? (
             <>
-              <Link to={"/login"}>
-                <li>Login</li>
-              </Link>
+             
               <Link to={"/register"}>
-                <li>Register</li>
+                <li>SignIn</li>
               </Link>
             </>
           ) : (
@@ -42,6 +40,10 @@ const Header = () => {
               <Link onClick={handleLogout}>
                 <li>logout</li>
               </Link>
+
+              <li>
+                <img className="rounded-full" width={40} height={40} src={user.photoURL} />
+              </li>
             </>
           )}
         </ul>
