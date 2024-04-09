@@ -37,7 +37,7 @@ const UserDashboard = () => {
                 key={index}
                 className="border  w-44 p-2 h-[100%] flex flex-col items-center rounded-xl"
               >
-                <h1>{subject.subjectName}</h1>
+                <h1 className="font-bold p-2">{subject.subjectName}</h1>
                 <button
                   onClick={() => {
                     setActiveSubject(subject.subjectName);

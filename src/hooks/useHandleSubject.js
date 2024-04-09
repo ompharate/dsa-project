@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
@@ -45,8 +46,10 @@ export const useHandleSubject = () => {
 
   const AddAttendance = async (roll, date, isPresent, subjectId, teacherId) => {
     try {
-      const docRef = collection(db, "attendance");
-      await addDoc(docRef, {
+      const customId = uuidv4();
+      const docRef = doc(db, "attendance", customId);
+      await setDoc(docRef, {
+        attendanceId: customId,
         roll,
         date,
         isPresent,
@@ -54,7 +57,7 @@ export const useHandleSubject = () => {
         teacherId,
       });
       console.log("attendance added successfully");
-      return true;
+      return "Attendance added successfully";
     } catch (error) {
       console.log(error);
     }
@@ -70,9 +73,11 @@ export const useHandleSubject = () => {
     teacherId
   ) => {
     try {
+      const customId = uuidv4();
       const rollNumber = parseInt(roll);
-      const docRef = collection(db, "marks");
-      await addDoc(docRef, {
+      const docRef = doc(db, "marks", customId);
+      await setDoc(docRef, {
+        marksId: customId,
         label,
         roll: rollNumber,
         outof,
@@ -81,7 +86,7 @@ export const useHandleSubject = () => {
         teacherId,
       });
       console.log("marks added successfully");
-      return true;
+      return "marks added successfully";
     } catch (error) {
       console.log(error);
     }
@@ -101,13 +106,59 @@ export const useHandleSubject = () => {
       );
       querySnapshot.forEach((doc) => {
         console.log(doc);
-       if (doc) newDataArr.push(doc.data());     
+        if (doc) newDataArr.push(doc.data());
       });
       return newDataArr;
     } catch (error) {
       console.log(error);
     }
   };
+  const fetchAttendance = async (teacherId, subjectId) => {
+    try {
+      const newDataArr = [];
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "attendance"),
+          where("teacherId", "==", teacherId),
+          where("subjectId", "==", subjectId)
+          // orderBy("roll"),
+        )
+      );
+      querySnapshot.forEach((doc) => {
+        console.log(doc);
+        if (doc) newDataArr.push(doc.data());
+      });
+      return newDataArr;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteAttendance = async (attendanceId) => {
+    try {
+      await deleteDoc(doc(db, "attendance", attendanceId));
+      return "Attendance Deleted Successfully";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteMarks = async (marksId) => {
+    console.log(marksId)
+    try {
+      await deleteDoc(doc(db, "marks", marksId));
+      return "Marks Deleted Successfully";
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  return { addSubject, fetchSubject, AddAttendance, AddMarks, fetchMarks };
+  return {
+    addSubject,
+    fetchSubject,
+    AddAttendance,
+    AddMarks,
+    fetchMarks,
+    fetchAttendance,
+    deleteAttendance,
+    deleteMarks,
+  };
 };

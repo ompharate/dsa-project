@@ -4,7 +4,7 @@ import { UseAllTabs } from "./UseAllTabs";
 
 const TabHandler = ({ activeSubject, teacherId, subjectId }) => {
   const [currentTab, setCurrentTab] = useState(0);
-  const { AddAttendance, AddMarks,CheckMarks } = UseAllTabs();
+  const { AddAttendance, AddMarks,CheckMarks,CheckAttendance } = UseAllTabs();
 
   const AddTermWork = () => {};
 
@@ -23,7 +23,7 @@ const TabHandler = ({ activeSubject, teacherId, subjectId }) => {
     },
     {
       label: "check attendance",
-      content: <div>done</div>,
+      content: <CheckAttendance teacherId={teacherId} subjectId={subjectId}/>,
     },
   ];
 

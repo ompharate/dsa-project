@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHandleSubject } from "../../hooks/useHandleSubject";
 
 export const UseAllTabs = () => {
-  const [isAdded, setIsAdded] = useState(false);
+  const [isAdded, setIsAdded] = useState(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,7 +24,7 @@ export const UseAllTabs = () => {
         subjectId,
         teacherId
       );
-      if (isAdded) setIsAdded(true);
+      if (isAdded) setIsAdded(isAdded);
     }
 
     return (
@@ -69,9 +69,7 @@ export const UseAllTabs = () => {
         >
           Submit
         </button>
-        <p className="text-green-500">
-          {isAdded ? "Data Added Successfully" : null}{" "}
-        </p>
+        <p className="text-green-500">{isAdded ? isAdded : null}</p>
       </div>
     );
   };
@@ -90,7 +88,7 @@ export const UseAllTabs = () => {
         subjectId,
         teacherId
       );
-      if (isAdded) setIsAdded(true);
+      if (isAdded) setIsAdded(isAdded);
     }
     return (
       <div className="flex flex-col gap-3">
@@ -98,7 +96,7 @@ export const UseAllTabs = () => {
           type="text"
           className="p-3 outline-none  bg-slate-200"
           placeholder="Enter Label"
-          autoComplete={true}          
+          autoComplete={true}
           onChange={(e) => setLabel(e.target.value)}
         />
         <input
@@ -126,23 +124,100 @@ export const UseAllTabs = () => {
         >
           Submit
         </button>
-        <p className="text-green-500">
-          {isAdded ? "Data Added Successfully" : null}{" "}
-        </p>
+        <p className="text-green-500">{isAdded ? isAdded : null}</p>
       </div>
     );
   };
 
-  const CheckMarks = ({ teacherId, subjectId }) => {
-    const { fetchMarks } = useHandleSubject();
-    const [marksData, setMarksData] = useState([]);
+  const CheckAttendance = ({ teacherId, subjectId }) => {
+    const { fetchAttendance, deleteAttendance } = useHandleSubject();
+    const [attendance, setAttendance] = useState([]);
+    async function getAttendance() {
+      const attendance = await fetchAttendance(teacherId, subjectId);
+      setAttendance(attendance);
+    }
     useEffect(() => {
-      async function getMarks() {
-        const marks = await fetchMarks(teacherId, subjectId);
-        setMarksData(marks);
-      }
+      getAttendance();
+    }, []);
+
+    const handleDelete = async (id) => {
+      const isDeleted = await deleteAttendance(id);
+      if (isDeleted) setIsAdded(isDeleted);
+      getAttendance();
+    };
+
+    return (
+      <div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Sr.
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Roll
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Date
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Is Present
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            <p className="text-green-500">{isAdded ? isAdded : null}</p>
+            {attendance?.map((att, index) => (
+              <tr key={index}>
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{att.roll}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{att.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {att.isPresent ? "Present" : "Not Present"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button
+                    onClick={() => handleDelete(att.attendanceId)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+  const CheckMarks = ({ teacherId, subjectId }) => {
+    const { fetchMarks, deleteMarks } = useHandleSubject();
+    const [marksData, setMarksData] = useState([]);
+    async function getMarks() {
+      const marks = await fetchMarks(teacherId, subjectId);
+      setMarksData(marks);
+    }
+    useEffect(() => {
       getMarks();
     }, []);
+
+    const handleDelete = async (id) => {
+      const isDeleted = await deleteMarks(id);
+      if (isDeleted) setIsAdded(isDeleted);
+      getMarks();
+    };
 
     return (
       <div>
@@ -176,21 +251,18 @@ export const UseAllTabs = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
+            <p className="text-green-500">{isAdded ? isAdded : null}</p>
             {marksData?.map((mark, index) => (
               <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">{index+1}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{mark.roll}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{mark.received}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{mark.outof}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {mark.received}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {mark.outof}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button
+                    onClick={() => handleDelete(mark.marksId)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
                     Delete
                   </button>
                 </td>
@@ -202,5 +274,5 @@ export const UseAllTabs = () => {
     );
   };
 
-  return { AddAttendance, AddMarks, CheckMarks };
+  return { AddAttendance, AddMarks, CheckMarks, CheckAttendance };
 };
