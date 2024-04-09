@@ -9,6 +9,7 @@ export const useAddUsers = () => {
         ...formData,
       });
       console.log("data added successfully");
+     
     } catch (error) {
       console.error("Error adding student:", error.message);
     }

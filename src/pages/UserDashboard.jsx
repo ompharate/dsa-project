@@ -39,7 +39,10 @@ const UserDashboard = () => {
               >
                 <h1>{subject.subjectName}</h1>
                 <button
-                  onClick={() => setActiveSubject(subject.subjectName)}
+                  onClick={() => {
+                    setActiveSubject(subject.subjectName);
+                    setActiveSubjectId(subject.subjectId);
+                  }}
                   className="bg-blue-500 text-white font-semibold rounded-xl p-2 w-[100%]"
                 >
                   show
@@ -49,7 +52,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <TabHandler activeSubject={activeSubject} />
+      <TabHandler subjectId={activeSubjectId} teacherId={user.uid} activeSubject={activeSubject} />
     </div>
   );
 };
