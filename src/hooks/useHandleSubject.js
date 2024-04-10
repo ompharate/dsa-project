@@ -74,12 +74,12 @@ export const useHandleSubject = () => {
   ) => {
     try {
       const customId = uuidv4();
-      const rollNumber = parseInt(roll);
+    
       const docRef = doc(db, "marks", customId);
       await setDoc(docRef, {
         marksId: customId,
         label,
-        roll: rollNumber,
+        roll,
         outof,
         received,
         subjectId,
