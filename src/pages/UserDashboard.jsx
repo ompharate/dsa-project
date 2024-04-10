@@ -11,7 +11,6 @@ const UserDashboard = () => {
   const [activeSubject, setActiveSubject] = useState();
   const [activeSubjectId, setActiveSubjectId] = useState();
 
-
   const fetchSubjectData = async () => {
     const subjectData = await fetchSubject(user.uid);
     setSubjectData(subjectData);
@@ -52,12 +51,13 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-
-      <TabHandler
-        subjectId={activeSubjectId}
-        teacherId={user.uid}
-        activeSubject={activeSubject}
-      />
+      {!activeSubject ? null : (
+        <TabHandler
+          subjectId={activeSubjectId}
+          teacherId={user.uid}
+          activeSubject={activeSubject}
+        />
+      )}
     </div>
   );
 };

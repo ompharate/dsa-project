@@ -21,7 +21,7 @@ export default function AuthContextProvider({ children }) {
         onSnapshot(doc(db, "teacher", user.uid), (doc) => {
           setUser(doc.data());
           setIsLoggedOut(false);
-          console.log("it ran again teacher");
+         
         });
         setIsLoading(false);
       } else {

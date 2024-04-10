@@ -22,9 +22,9 @@ export const useHandleSubject = () => {
         teacherId: uid,
         subjectName: formData,
       });
-      console.log("subject created successfully");
+      ("subject created successfully");
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
 
@@ -35,12 +35,12 @@ export const useHandleSubject = () => {
         query(collection(db, "subjects"), where("teacherId", "==", uid))
       );
       querySnapshot.forEach((doc) => {
-        console.log("doc data is", doc.data());
+        ("doc data is", doc.data());
         newDataArr.push(doc.data());
       });
       return newDataArr;
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
 
@@ -56,10 +56,10 @@ export const useHandleSubject = () => {
         subjectId,
         teacherId,
       });
-      console.log("attendance added successfully");
+      ("attendance added successfully");
       return "Attendance added successfully";
     } catch (error) {
-      console.log(error);
+      (error);
     }
     return false;
   };
@@ -85,10 +85,10 @@ export const useHandleSubject = () => {
         subjectId,
         teacherId,
       });
-      console.log("marks added successfully");
+      ("marks added successfully");
       return "marks added successfully";
     } catch (error) {
-      console.log(error);
+      (error);
     }
     return false;
   };
@@ -105,12 +105,12 @@ export const useHandleSubject = () => {
         )
       );
       querySnapshot.forEach((doc) => {
-        console.log(doc);
+        (doc);
         if (doc) newDataArr.push(doc.data());
       });
       return newDataArr;
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
   const fetchAttendance = async (teacherId, subjectId) => {
@@ -125,12 +125,12 @@ export const useHandleSubject = () => {
         )
       );
       querySnapshot.forEach((doc) => {
-        console.log(doc);
+        (doc);
         if (doc) newDataArr.push(doc.data());
       });
       return newDataArr;
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
   const deleteAttendance = async (attendanceId) => {
@@ -138,16 +138,16 @@ export const useHandleSubject = () => {
       await deleteDoc(doc(db, "attendance", attendanceId));
       return "Attendance Deleted Successfully";
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
   const deleteMarks = async (marksId) => {
-    console.log(marksId)
+    (marksId)
     try {
       await deleteDoc(doc(db, "marks", marksId));
       return "Marks Deleted Successfully";
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
 

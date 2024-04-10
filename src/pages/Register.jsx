@@ -19,7 +19,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
+      (result);
       const { displayName, email, uid, photoURL } = result.user;
       const formData = {
         uid: uid,
@@ -33,7 +33,7 @@ const Register = () => {
         CollectionName: userType,
       });
     } catch (error) {
-      console.log(`error from register ${userType}->`, error);
+      (`error from register ${userType}->`, error);
     }
   };
   return (
