@@ -11,7 +11,7 @@ export const UseAllTabs = () => {
     }, 2000);
   }, [isAdded]);
 
-  const AddAttendance = ({ teacherId, subjectId }) => {
+  const AddAttendance = ({ activeSubject,teacherId, subjectId }) => {
     const [roll, setRoll] = useState();
     const [date, setDate] = useState();
     const [isPresent, setIsPresent] = useState(false);
@@ -24,7 +24,8 @@ export const UseAllTabs = () => {
         date,
         isPresent,
         subjectId,
-        teacherId
+        teacherId,
+        activeSubject,
       );
       if (isAdded) setIsAdded(isAdded);
     }
@@ -75,7 +76,7 @@ export const UseAllTabs = () => {
       </div>
     );
   };
-  const AddMarks = ({ teacherId, subjectId }) => {
+  const AddMarks = ({ activeSubject,teacherId, subjectId }) => {
     const [label, setLabel] = useState();
     const [roll, setRoll] = useState();
     const [outOf, setOutOf] = useState();
@@ -89,7 +90,8 @@ export const UseAllTabs = () => {
         outOf,
         received,
         subjectId,
-        teacherId
+        teacherId,
+        activeSubject
       );
       if (isAdded) setIsAdded(isAdded);
     }

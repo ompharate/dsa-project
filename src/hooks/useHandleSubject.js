@@ -44,7 +44,7 @@ export const useHandleSubject = () => {
     }
   };
 
-  const AddAttendance = async (roll, date, isPresent, subjectId, teacherId) => {
+  const AddAttendance = async (roll, date, isPresent, subjectId, teacherId,activeSubject) => {
     try {
       const customId = uuidv4();
       const docRef = doc(db, "attendance", customId);
@@ -55,6 +55,7 @@ export const useHandleSubject = () => {
         isPresent,
         subjectId,
         teacherId,
+        activeSubject
       });
       ("attendance added successfully");
       return "Attendance added successfully";
@@ -70,7 +71,8 @@ export const useHandleSubject = () => {
     outof,
     received,
     subjectId,
-    teacherId
+    teacherId,
+    activeSubject
   ) => {
     try {
       const customId = uuidv4();
@@ -84,6 +86,7 @@ export const useHandleSubject = () => {
         received,
         subjectId,
         teacherId,
+        activeSubject
       });
       ("marks added successfully");
       return "marks added successfully";

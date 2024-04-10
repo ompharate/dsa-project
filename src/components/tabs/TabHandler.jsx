@@ -12,11 +12,11 @@ const TabHandler = ({ activeSubject, teacherId, subjectId }) => {
   const tabs = [
     {
       label: "Add attendance",
-      content: <AddAttendance teacherId={teacherId} subjectId={subjectId} />,
+      content: <AddAttendance activeSubject={activeSubject} teacherId={teacherId} subjectId={subjectId} />,
     },
     {
       label: "Add marks",
-      content: <AddMarks teacherId={teacherId} subjectId={subjectId} />,
+      content: <AddMarks activeSubject={activeSubject} teacherId={teacherId} subjectId={subjectId} />,
     },
     {
       label: "check marks",
